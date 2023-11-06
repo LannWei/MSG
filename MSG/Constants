@@ -1,0 +1,19 @@
+import numba as nb
+import numpy as np
+import torch
+
+BASE_RADIUS = 5.0e-2  # the closest distance between each particles 5*10^(-2) = 0.05
+ND_RAIUS = 2.1 * BASE_RADIUS
+NU = 1.0e-6   # viscority coefficient
+RHO = 1.0e3    # density of water
+G = -9.8065
+DIMS = 3
+DT = 0.002
+
+
+@nb.njit(nb.float64(nb.float64, nb.float64))
+def MPS_KERNEL(r, re):
+    if r > re or r < 1e-8:
+        return 0.0
+    else:
+        return (re / r) - 1.0
